@@ -1,6 +1,6 @@
 #include <iostream>
-#include "caches/lfu.hpp"
-#include "caches/ideal.hpp"
+#include "lfu.hpp"
+#include "ideal.hpp"
 #include <cassert>
 
 int slow_get_page_int(int key) { return key; }
@@ -8,7 +8,7 @@ int slow_get_page_int(int key) { return key; }
 int main() {
     bool flag = false;
 
-    #if MODE == 2
+    #if MODE
         flag = true;
     #endif
 

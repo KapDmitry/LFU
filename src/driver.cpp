@@ -1,42 +1,58 @@
+// Определение режимов сборки
+// #define LFU_CACHE
+// #define IDEAL_CACHE
+
 #include <iostream>
-#include "lfu.hpp"
-#include "ideal.hpp"
 #include <cassert>
+
+#ifdef LFU_CACHE
+#include "lfu.hpp"
+#endif
+
+#ifdef IDEAL_CACHE
+#include "ideal.hpp"
+#endif
 
 int slow_get_page_int(int key) { return key; }
 
 int main() {
-    bool flag = false;
-
-    #if MODE
-        flag = true;
-    #endif
-
-    int hits = 0;
     int n;
     size_t m;
  
     std::cin >> m >> n;
     assert(std::cin.good());
-    caches::lfu_cache<int> c{m};
-    caches::ideal_cache<int> ic{m};
+
+    #ifdef LFU_CACHE
+        int hits = 0;
+        caches::lfu_cache<int> c{m};
+    #endif
+
+    #ifdef IDEAL_CACHE
+        caches::ideal_cache<int> ic{m};
+    #endif
 
     for (int i = 0; i < n; ++i) {
         int q;
         std::cin >> q;
         assert(std::cin.good());
 
-        if (flag) {
+        #ifdef IDEAL_CACHE
             ic.update_history(q);
-        }
+        #endif
 
-        if (c.lookup_update(q, slow_get_page_int))
-            hits += 1;
+        #ifdef LFU_CACHE
+            if (c.lookup_update(q, slow_get_page_int))
+                hits += 1;
+        #endif
     }
 
-    std::cout << hits << std::endl;
+    #ifdef LFU_CACHE
+        std::cout << hits << std::endl;
+    #endif
 
-    if (flag) {
+    #ifdef IDEAL_CACHE
         std::cout << ic.test_cache(slow_get_page_int) << "\n";
-    }
+    #endif
+
+    return 0;
 }

@@ -1,7 +1,3 @@
-// Определение режимов сборки
-// #define LFU_CACHE
-// #define IDEAL_CACHE
-
 #include <iostream>
 #include <cassert>
 

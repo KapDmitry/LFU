@@ -33,7 +33,7 @@ int main() {
         assert(std::cin.good());
 
         #ifdef IDEAL_CACHE
-            ic.update_history(q);
+            ic.add_history(q);
         #endif
 
         #ifdef LFU_CACHE
